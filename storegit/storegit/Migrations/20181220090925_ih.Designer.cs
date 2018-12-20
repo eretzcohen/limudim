@@ -11,9 +11,10 @@ using System;
 namespace storegit.Migrations
 {
     [DbContext(typeof(shopeContext))]
-    partial class shopeContextModelSnapshot : ModelSnapshot
+    [Migration("20181220090925_ih")]
+    partial class ih
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,22 +37,6 @@ namespace storegit.Migrations
                     b.ToTable("Adress");
                 });
 
-            modelBuilder.Entity("storegit.Models.orders", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("Usersid");
-
-                    b.Property<string>("data");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("Usersid");
-
-                    b.ToTable("orders");
-                });
-
             modelBuilder.Entity("storegit.Models.Products", b =>
                 {
                     b.Property<int>("id")
@@ -61,15 +46,11 @@ namespace storegit.Migrations
 
                     b.Property<string>("color");
 
-                    b.Property<int?>("ordersid");
-
                     b.Property<int>("price");
 
                     b.HasKey("id");
 
                     b.HasIndex("Type_of_jewelryid");
-
-                    b.HasIndex("ordersid");
 
                     b.ToTable("Products");
                 });
@@ -106,22 +87,11 @@ namespace storegit.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("storegit.Models.orders", b =>
-                {
-                    b.HasOne("storegit.Models.Users", "Users")
-                        .WithMany()
-                        .HasForeignKey("Usersid");
-                });
-
             modelBuilder.Entity("storegit.Models.Products", b =>
                 {
                     b.HasOne("storegit.Models.Type_of_jewelry", "Type_of_jewelry")
                         .WithMany()
                         .HasForeignKey("Type_of_jewelryid");
-
-                    b.HasOne("storegit.Models.orders")
-                        .WithMany("products")
-                        .HasForeignKey("ordersid");
                 });
 
             modelBuilder.Entity("storegit.Models.Users", b =>

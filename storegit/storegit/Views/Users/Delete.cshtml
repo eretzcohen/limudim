@@ -18,6 +18,14 @@
             @Html.DisplayFor(model => model.name)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.Adress)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Adress.CityAddress)
+            @Html.DisplayFor(model => model.Adress.HomeAdress)
+            @Html.DisplayFor(model => model.Adress.HomeNamber)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.phone)
         </dt>
         <dd>

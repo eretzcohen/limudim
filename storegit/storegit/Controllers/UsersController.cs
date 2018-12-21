@@ -21,7 +21,7 @@ namespace storegit.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            return View(await _context.Users.Include(x=>x.Adress).ToListAsync());
         }
 
         // GET: Users/Details/5
@@ -32,7 +32,7 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users
+            var users = await _context.Users.Include(x=>x.Adress)
                 .SingleOrDefaultAsync(m => m.id == id);
             if (users == null)
             {
@@ -53,7 +53,7 @@ namespace storegit.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,name,phone,email")] Users users)
+        public async Task<IActionResult> Create([Bind("id,name,phone,email,Adress")] Users users)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +72,7 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users.SingleOrDefaultAsync(m => m.id == id);
+            var users = await _context.Users.Include(x=>x.Adress).SingleOrDefaultAsync(m => m.id == id);
             if (users == null)
             {
                 return NotFound();
@@ -123,7 +123,7 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var users = await _context.Users
+            var users = await _context.Users.Include(x => x.Adress)
                 .SingleOrDefaultAsync(m => m.id == id);
             if (users == null)
             {

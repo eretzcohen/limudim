@@ -23,6 +23,12 @@
         <dd>
             @Html.DisplayFor(model => model.price)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Type_of_jewelry.name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Type_of_jewelry.name)
+        </dd>
     </dl>
     
     <form asp-action="Delete">

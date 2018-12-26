@@ -11,9 +11,10 @@ using System;
 namespace storegit.Migrations
 {
     [DbContext(typeof(shopeContext))]
-    partial class shopeContextModelSnapshot : ModelSnapshot
+    [Migration("20181226165406_ff3")]
+    partial class ff3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

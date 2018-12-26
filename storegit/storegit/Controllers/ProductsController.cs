@@ -21,7 +21,7 @@ namespace storegit.Controllers
         // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Products.Include(x=>x.Type_of_jewelry).ToListAsync());
+            return View(await _context.Products.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -53,7 +53,7 @@ namespace storegit.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,color,price,Type_of_jewelry")] Products products)
+        public async Task<IActionResult> Create([Bind("id,color,price,type")] Products products)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +72,7 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products.Include(x=>x.Type_of_jewelry).SingleOrDefaultAsync(m => m.id == id);
+            var products = await _context.Products.SingleOrDefaultAsync(m => m.id == id);
             if (products == null)
             {
                 return NotFound();
@@ -85,7 +85,7 @@ namespace storegit.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,color,price,Type_of_jewelry")] Products products)
+        public async Task<IActionResult> Edit(int id, [Bind("id,color,price,type")] Products products)
         {
             if (id != products.id)
             {
@@ -123,7 +123,7 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products.Include(x=>x.Type_of_jewelry)
+            var products = await _context.Products
                 .SingleOrDefaultAsync(m => m.id == id);
             if (products == null)
             {
@@ -138,7 +138,7 @@ namespace storegit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var products = await _context.Products.Include(x=>x.Type_of_jewelry).SingleOrDefaultAsync(m => m.id == id);
+            var products = await _context.Products.SingleOrDefaultAsync(m => m.id == id);
             _context.Products.Remove(products);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

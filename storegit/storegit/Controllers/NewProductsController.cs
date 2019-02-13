@@ -9,42 +9,22 @@ using storegit.Models;
 
 namespace storegit.Controllers
 {
-    public class ProductsController : Controller
+    public class NewProductsController : Controller
     {
         private readonly shopeContext _context;
 
-        public ProductsController(shopeContext context)
+        public NewProductsController(shopeContext context)
         {
             _context = context;
         }
 
-        // GET: Products
-        public ActionResult Index(string type , String price , String color)
+        // GET: NewProducts
+        public async Task<IActionResult> Index()
         {
-            var product1 = from m in _context.Products
-                         select m;
-
-            if (!String.IsNullOrEmpty(type))
-            {
-                product1 = product1.Where(s => s.type.Contains(type));
-            }
-
-            //if (!String.IsNullOrEmpty(price))
-            //{
-            //    product1 = product1.Where(s => s.price.CompareTo(price) );
-            //}
-
-            if (!String.IsNullOrEmpty(color))
-            {
-                product1 = product1.Where(s => s.color.Contains(color));
-            }
-
-            
-
-            return View(product1);
+            return View(await _context.NewProduct.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        // GET: NewProducts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -52,39 +32,39 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products
-                .SingleOrDefaultAsync(m => m.id == id);
-            if (products == null)
+            var newProduct = await _context.NewProduct
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (newProduct == null)
             {
                 return NotFound();
             }
 
-            return View(products);
+            return View(newProduct);
         }
 
-        // GET: Products/Create
+        // GET: NewProducts/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Products/Create
+        // POST: NewProducts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,color,price,type")] Products products)
+        public async Task<IActionResult> Create([Bind("Id,Color,Price,Type")] NewProduct newProduct)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(products);
+                _context.Add(newProduct);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(products);
+            return View(newProduct);
         }
 
-        // GET: Products/Edit/5
+        // GET: NewProducts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -92,22 +72,22 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products.SingleOrDefaultAsync(m => m.id == id);
-            if (products == null)
+            var newProduct = await _context.NewProduct.SingleOrDefaultAsync(m => m.Id == id);
+            if (newProduct == null)
             {
                 return NotFound();
             }
-            return View(products);
+            return View(newProduct);
         }
 
-        // POST: Products/Edit/5
+        // POST: NewProducts/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,color,price,type")] Products products)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Color,Price,Type")] NewProduct newProduct)
         {
-            if (id != products.id)
+            if (id != newProduct.Id)
             {
                 return NotFound();
             }
@@ -116,12 +96,12 @@ namespace storegit.Controllers
             {
                 try
                 {
-                    _context.Update(products);
+                    _context.Update(newProduct);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductsExists(products.id))
+                    if (!NewProductExists(newProduct.Id))
                     {
                         return NotFound();
                     }
@@ -132,10 +112,10 @@ namespace storegit.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(products);
+            return View(newProduct);
         }
 
-        // GET: Products/Delete/5
+        // GET: NewProducts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -143,30 +123,30 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products
-                .SingleOrDefaultAsync(m => m.id == id);
-            if (products == null)
+            var newProduct = await _context.NewProduct
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (newProduct == null)
             {
                 return NotFound();
             }
 
-            return View(products);
+            return View(newProduct);
         }
 
-        // POST: Products/Delete/5
+        // POST: NewProducts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var products = await _context.Products.SingleOrDefaultAsync(m => m.id == id);
-            _context.Products.Remove(products);
+            var newProduct = await _context.NewProduct.SingleOrDefaultAsync(m => m.Id == id);
+            _context.NewProduct.Remove(newProduct);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductsExists(int id)
+        private bool NewProductExists(int id)
         {
-            return _context.Products.Any(e => e.id == id);
+            return _context.NewProduct.Any(e => e.Id == id);
         }
     }
 }

@@ -9,42 +9,23 @@ using storegit.Models;
 
 namespace storegit.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductOrdersController : Controller
     {
         private readonly shopeContext _context;
 
-        public ProductsController(shopeContext context)
+        public ProductOrdersController(shopeContext context)
         {
             _context = context;
         }
 
-        // GET: Products
-        public ActionResult Index(string type , String price , String color)
+        // GET: ProductOrders
+        public async Task<IActionResult> Index()
         {
-            var product1 = from m in _context.Products
-                         select m;
-
-            if (!String.IsNullOrEmpty(type))
-            {
-                product1 = product1.Where(s => s.type.Contains(type));
-            }
-
-            //if (!String.IsNullOrEmpty(price))
-            //{
-            //    product1 = product1.Where(s => s.price.CompareTo(price) );
-            //}
-
-            if (!String.IsNullOrEmpty(color))
-            {
-                product1 = product1.Where(s => s.color.Contains(color));
-            }
-
-            
-
-            return View(product1);
+            var shopeContext = _context.ProductOrder.Include(p => p.Order).Include(p => p.Product);
+            return View(await shopeContext.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        // GET: ProductOrders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -52,39 +33,45 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products
+            var productOrder = await _context.ProductOrder
+                .Include(p => p.Order)
+                .Include(p => p.Product)
                 .SingleOrDefaultAsync(m => m.id == id);
-            if (products == null)
+            if (productOrder == null)
             {
                 return NotFound();
             }
 
-            return View(products);
+            return View(productOrder);
         }
 
-        // GET: Products/Create
+        // GET: ProductOrders/Create
         public IActionResult Create()
         {
+            ViewData["OrderId"] = new SelectList(_context.NewOrder, "Id", "Id");
+            ViewData["ProductId"] = new SelectList(_context.NewProduct, "Id", "Id");
             return View();
         }
 
-        // POST: Products/Create
+        // POST: ProductOrders/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,color,price,type")] Products products)
+        public async Task<IActionResult> Create([Bind("id,OrderId,ProductId")] ProductOrder productOrder)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(products);
+                _context.Add(productOrder);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(products);
+            ViewData["OrderId"] = new SelectList(_context.NewOrder, "Id", "Id", productOrder.OrderId);
+            ViewData["ProductId"] = new SelectList(_context.NewProduct, "Id", "Id", productOrder.ProductId);
+            return View(productOrder);
         }
 
-        // GET: Products/Edit/5
+        // GET: ProductOrders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -92,22 +79,24 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products.SingleOrDefaultAsync(m => m.id == id);
-            if (products == null)
+            var productOrder = await _context.ProductOrder.SingleOrDefaultAsync(m => m.id == id);
+            if (productOrder == null)
             {
                 return NotFound();
             }
-            return View(products);
+            ViewData["OrderId"] = new SelectList(_context.NewOrder, "Id", "Id", productOrder.OrderId);
+            ViewData["ProductId"] = new SelectList(_context.NewProduct, "Id", "Id", productOrder.ProductId);
+            return View(productOrder);
         }
 
-        // POST: Products/Edit/5
+        // POST: ProductOrders/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,color,price,type")] Products products)
+        public async Task<IActionResult> Edit(int id, [Bind("id,OrderId,ProductId")] ProductOrder productOrder)
         {
-            if (id != products.id)
+            if (id != productOrder.id)
             {
                 return NotFound();
             }
@@ -116,12 +105,12 @@ namespace storegit.Controllers
             {
                 try
                 {
-                    _context.Update(products);
+                    _context.Update(productOrder);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductsExists(products.id))
+                    if (!ProductOrderExists(productOrder.id))
                     {
                         return NotFound();
                     }
@@ -132,10 +121,12 @@ namespace storegit.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(products);
+            ViewData["OrderId"] = new SelectList(_context.NewOrder, "Id", "Id", productOrder.OrderId);
+            ViewData["ProductId"] = new SelectList(_context.NewProduct, "Id", "Id", productOrder.ProductId);
+            return View(productOrder);
         }
 
-        // GET: Products/Delete/5
+        // GET: ProductOrders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -143,30 +134,32 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products
+            var productOrder = await _context.ProductOrder
+                .Include(p => p.Order)
+                .Include(p => p.Product)
                 .SingleOrDefaultAsync(m => m.id == id);
-            if (products == null)
+            if (productOrder == null)
             {
                 return NotFound();
             }
 
-            return View(products);
+            return View(productOrder);
         }
 
-        // POST: Products/Delete/5
+        // POST: ProductOrders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var products = await _context.Products.SingleOrDefaultAsync(m => m.id == id);
-            _context.Products.Remove(products);
+            var productOrder = await _context.ProductOrder.SingleOrDefaultAsync(m => m.id == id);
+            _context.ProductOrder.Remove(productOrder);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductsExists(int id)
+        private bool ProductOrderExists(int id)
         {
-            return _context.Products.Any(e => e.id == id);
+            return _context.ProductOrder.Any(e => e.id == id);
         }
     }
 }

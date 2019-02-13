@@ -21,5 +21,13 @@ namespace storegit.Models
         public DbSet<storegit.Models.Products> Products { get; set; }
         
         public DbSet<storegit.Models.orders> orders { get; set; }
+        
+        public DbSet<storegit.Models.NewOrder> NewOrder { get; set; }
+        
+        public DbSet<storegit.Models.NewProduct> NewProduct { get; set; }
+        
+        public DbSet<storegit.Models.NewUser> NewUser { get; set; }
+        
+        public DbSet<storegit.Models.ProductOrder> ProductOrder { get; set; }
     }
 }

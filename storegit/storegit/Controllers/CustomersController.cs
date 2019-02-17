@@ -9,22 +9,22 @@ using storegit.Models;
 
 namespace storegit.Controllers
 {
-    public class AdressesController : Controller
+    public class CustomersController : Controller
     {
         private readonly shopeContext _context;
 
-        public AdressesController(shopeContext context)
+        public CustomersController(shopeContext context)
         {
             _context = context;
         }
 
-        // GET: Adresses
+        // GET: Customers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Adress.ToListAsync());
+            return View(await _context.Customer.ToListAsync());
         }
 
-        // GET: Adresses/Details/5
+        // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +32,39 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var adress = await _context.Adress
-                .SingleOrDefaultAsync(m => m.id == id);
-            if (adress == null)
+            var customer = await _context.Customer
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return View(adress);
+            return View(customer);
         }
 
-        // GET: Adresses/Create
+        // GET: Customers/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Adresses/Create
+        // POST: Customers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,HomeAdress,CityAddress,HomeNamber")] Adress adress)
+        public async Task<IActionResult> Create([Bind("Id,Fname,Lnam,City,Street,NumberHome")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(adress);
+                _context.Add(customer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(adress);
+            return View(customer);
         }
 
-        // GET: Adresses/Edit/5
+        // GET: Customers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +72,22 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var adress = await _context.Adress.SingleOrDefaultAsync(m => m.id == id);
-            if (adress == null)
+            var customer = await _context.Customer.SingleOrDefaultAsync(m => m.Id == id);
+            if (customer == null)
             {
                 return NotFound();
             }
-            return View(adress);
+            return View(customer);
         }
 
-        // POST: Adresses/Edit/5
+        // POST: Customers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,HomeAdress,CityAddress,HomeNamber")] Adress adress)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Fname,Lnam,City,Street,NumberHome")] Customer customer)
         {
-            if (id != adress.id)
+            if (id != customer.Id)
             {
                 return NotFound();
             }
@@ -96,12 +96,12 @@ namespace storegit.Controllers
             {
                 try
                 {
-                    _context.Update(adress);
+                    _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!AdressExists(adress.id))
+                    if (!CustomerExists(customer.Id))
                     {
                         return NotFound();
                     }
@@ -112,10 +112,10 @@ namespace storegit.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(adress);
+            return View(customer);
         }
 
-        // GET: Adresses/Delete/5
+        // GET: Customers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +123,30 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var adress = await _context.Adress
-                .SingleOrDefaultAsync(m => m.id == id);
-            if (adress == null)
+            var customer = await _context.Customer
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            return View(adress);
+            return View(customer);
         }
 
-        // POST: Adresses/Delete/5
+        // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var adress = await _context.Adress.SingleOrDefaultAsync(m => m.id == id);
-            _context.Adress.Remove(adress);
+            var customer = await _context.Customer.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Customer.Remove(customer);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool AdressExists(int id)
+        private bool CustomerExists(int id)
         {
-            return _context.Adress.Any(e => e.id == id);
+            return _context.Customer.Any(e => e.Id == id);
         }
     }
 }

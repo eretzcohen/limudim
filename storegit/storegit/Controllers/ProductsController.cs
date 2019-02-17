@@ -19,29 +19,9 @@ namespace storegit.Controllers
         }
 
         // GET: Products
-        public ActionResult Index(string type , String price , String color)
+        public async Task<IActionResult> Index()
         {
-            var product1 = from m in _context.Products
-                         select m;
-
-            if (!String.IsNullOrEmpty(type))
-            {
-                product1 = product1.Where(s => s.type.Contains(type));
-            }
-
-            //if (!String.IsNullOrEmpty(price))
-            //{
-            //    product1 = product1.Where(s => s.price.CompareTo(price) );
-            //}
-
-            if (!String.IsNullOrEmpty(color))
-            {
-                product1 = product1.Where(s => s.color.Contains(color));
-            }
-
-            
-
-            return View(product1);
+            return View(await _context.Product.ToListAsync());
         }
 
         // GET: Products/Details/5
@@ -52,14 +32,14 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products
-                .SingleOrDefaultAsync(m => m.id == id);
-            if (products == null)
+            var product = await _context.Product
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(products);
+            return View(product);
         }
 
         // GET: Products/Create
@@ -73,15 +53,15 @@ namespace storegit.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,color,price,type")] Products products)
+        public async Task<IActionResult> Create([Bind("Id,TypeName,Price,Color,Weight,Unit")] Product product)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(products);
+                _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(products);
+            return View(product);
         }
 
         // GET: Products/Edit/5
@@ -92,12 +72,12 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products.SingleOrDefaultAsync(m => m.id == id);
-            if (products == null)
+            var product = await _context.Product.SingleOrDefaultAsync(m => m.Id == id);
+            if (product == null)
             {
                 return NotFound();
             }
-            return View(products);
+            return View(product);
         }
 
         // POST: Products/Edit/5
@@ -105,9 +85,9 @@ namespace storegit.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,color,price,type")] Products products)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TypeName,Price,Color,Weight,Unit")] Product product)
         {
-            if (id != products.id)
+            if (id != product.Id)
             {
                 return NotFound();
             }
@@ -116,12 +96,12 @@ namespace storegit.Controllers
             {
                 try
                 {
-                    _context.Update(products);
+                    _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductsExists(products.id))
+                    if (!ProductExists(product.Id))
                     {
                         return NotFound();
                     }
@@ -132,7 +112,7 @@ namespace storegit.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(products);
+            return View(product);
         }
 
         // GET: Products/Delete/5
@@ -143,14 +123,14 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var products = await _context.Products
-                .SingleOrDefaultAsync(m => m.id == id);
-            if (products == null)
+            var product = await _context.Product
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(products);
+            return View(product);
         }
 
         // POST: Products/Delete/5
@@ -158,15 +138,15 @@ namespace storegit.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var products = await _context.Products.SingleOrDefaultAsync(m => m.id == id);
-            _context.Products.Remove(products);
+            var product = await _context.Product.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Product.Remove(product);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductsExists(int id)
+        private bool ProductExists(int id)
         {
-            return _context.Products.Any(e => e.id == id);
+            return _context.Product.Any(e => e.Id == id);
         }
     }
 }

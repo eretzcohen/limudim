@@ -12,7 +12,7 @@ namespace storegit.Models
         public int phone { get; set; }
         public string email { get; set; }
 
-        public ICollection<orders> Orders { get; set; }
+        //public ICollection<orders> Orders { get; set; }
 
     }
 }

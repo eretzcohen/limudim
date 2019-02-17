@@ -1,4 +1,4 @@
-﻿@model storegit.Models.Products
+﻿@model storegit.Models.Product
 
 @{
     ViewData["Title"] = "Details";
@@ -7,30 +7,42 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Products</h4>
+    <h4>Product</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.color)
+            @Html.DisplayNameFor(model => model.TypeName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.color)
+            @Html.DisplayFor(model => model.TypeName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.price)
+            @Html.DisplayNameFor(model => model.Price)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.price)
+            @Html.DisplayFor(model => model.Price)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.type)
+            @Html.DisplayNameFor(model => model.Color)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.type)
+            @Html.DisplayFor(model => model.Color)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Weight)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Weight)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Unit)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Unit)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

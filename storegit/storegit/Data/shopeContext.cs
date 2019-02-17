@@ -13,15 +13,6 @@ namespace storegit.Models
             : base(options)
         {
         }
-
-        public DbSet<storegit.Models.Users> Users { get; set; }
-
-        public DbSet<storegit.Models.Adress> Adress { get; set; }
-
-        public DbSet<storegit.Models.Products> Products { get; set; }
-        
-        public DbSet<storegit.Models.orders> orders { get; set; }
-        
         public DbSet<storegit.Models.NewOrder> NewOrder { get; set; }
         
         public DbSet<storegit.Models.NewProduct> NewProduct { get; set; }
@@ -29,5 +20,11 @@ namespace storegit.Models
         public DbSet<storegit.Models.NewUser> NewUser { get; set; }
         
         public DbSet<storegit.Models.ProductOrder> ProductOrder { get; set; }
+        
+        public DbSet<storegit.Models.Product> Product { get; set; }
+        
+        public DbSet<storegit.Models.Order> Order { get; set; }
+        
+        public DbSet<storegit.Models.Customer> Customer { get; set; }
     }
 }

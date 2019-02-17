@@ -9,22 +9,23 @@ using storegit.Models;
 
 namespace storegit.Controllers
 {
-    public class ordersController : Controller
+    public class OrdersController : Controller
     {
         private readonly shopeContext _context;
 
-        public ordersController(shopeContext context)
+        public OrdersController(shopeContext context)
         {
             _context = context;
         }
 
-        // GET: orders
+        // GET: Orders
         public async Task<IActionResult> Index()
         {
-            return View(await _context.orders.ToListAsync());
+            var shopeContext = _context.Order.Include(o => o.Customer);
+            return View(await shopeContext.ToListAsync());
         }
 
-        // GET: orders/Details/5
+        // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +33,42 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var orders = await _context.orders
-                .SingleOrDefaultAsync(m => m.id == id);
-            if (orders == null)
+            var order = await _context.Order
+                .Include(o => o.Customer)
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (order == null)
             {
                 return NotFound();
             }
 
-            return View(orders);
+            return View(order);
         }
 
-        // GET: orders/Create
+        // GET: Orders/Create
         public IActionResult Create()
         {
+            ViewData["CustomerId"] = new SelectList(_context.Set<Customer>(), "Id", "Id");
             return View();
         }
 
-        // POST: orders/Create
+        // POST: Orders/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,data")] orders orders)
+        public async Task<IActionResult> Create([Bind("Id,CustomerId")] Order order)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(orders);
+                _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(orders);
+            ViewData["CustomerId"] = new SelectList(_context.Set<Customer>(), "Id", "Id", order.CustomerId);
+            return View(order);
         }
 
-        // GET: orders/Edit/5
+        // GET: Orders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +76,23 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var orders = await _context.orders.SingleOrDefaultAsync(m => m.id == id);
-            if (orders == null)
+            var order = await _context.Order.SingleOrDefaultAsync(m => m.Id == id);
+            if (order == null)
             {
                 return NotFound();
             }
-            return View(orders);
+            ViewData["CustomerId"] = new SelectList(_context.Set<Customer>(), "Id", "Id", order.CustomerId);
+            return View(order);
         }
 
-        // POST: orders/Edit/5
+        // POST: Orders/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,data")] orders orders)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerId")] Order order)
         {
-            if (id != orders.id)
+            if (id != order.Id)
             {
                 return NotFound();
             }
@@ -96,12 +101,12 @@ namespace storegit.Controllers
             {
                 try
                 {
-                    _context.Update(orders);
+                    _context.Update(order);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ordersExists(orders.id))
+                    if (!OrderExists(order.Id))
                     {
                         return NotFound();
                     }
@@ -112,10 +117,11 @@ namespace storegit.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(orders);
+            ViewData["CustomerId"] = new SelectList(_context.Set<Customer>(), "Id", "Id", order.CustomerId);
+            return View(order);
         }
 
-        // GET: orders/Delete/5
+        // GET: Orders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +129,31 @@ namespace storegit.Controllers
                 return NotFound();
             }
 
-            var orders = await _context.orders
-                .SingleOrDefaultAsync(m => m.id == id);
-            if (orders == null)
+            var order = await _context.Order
+                .Include(o => o.Customer)
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (order == null)
             {
                 return NotFound();
             }
 
-            return View(orders);
+            return View(order);
         }
 
-        // POST: orders/Delete/5
+        // POST: Orders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var orders = await _context.orders.SingleOrDefaultAsync(m => m.id == id);
-            _context.orders.Remove(orders);
+            var order = await _context.Order.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Order.Remove(order);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ordersExists(int id)
+        private bool OrderExists(int id)
         {
-            return _context.orders.Any(e => e.id == id);
+            return _context.Order.Any(e => e.Id == id);
         }
     }
 }

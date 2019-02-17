@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using storegit.Models;
 
 namespace storegit.Migrations
 {
     [DbContext(typeof(shopeContext))]
-    partial class shopeContextModelSnapshot : ModelSnapshot
+    [Migration("20190217101605_init2")]
+    partial class init2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,7 +109,7 @@ namespace storegit.Migrations
 
                     b.Property<string>("Color");
 
-                    b.Property<int>("OrderId");
+                    b.Property<int?>("OrderId");
 
                     b.Property<int>("Price");
 
@@ -159,10 +161,9 @@ namespace storegit.Migrations
 
             modelBuilder.Entity("storegit.Models.Product", b =>
                 {
-                    b.HasOne("storegit.Models.Order", "Order")
+                    b.HasOne("storegit.Models.Order")
                         .WithMany("Products")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("storegit.Models.ProductOrder", b =>

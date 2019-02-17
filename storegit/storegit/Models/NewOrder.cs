@@ -11,8 +11,6 @@ namespace storegit.Models
 
         public string Data { get; set; }
 
-        public Users Users { get; set; }
-
         public ICollection<ProductOrder> Products { get; set; }
 
         public NewUser User { get; set; }

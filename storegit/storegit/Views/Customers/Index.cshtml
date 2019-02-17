@@ -1,4 +1,4 @@
-﻿@model IEnumerable<storegit.Models.Product>
+﻿@model IEnumerable<storegit.Models.Customer>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,19 +13,19 @@
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.TypeName)
+                    @Html.DisplayNameFor(model => model.Fname)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Price)
+                    @Html.DisplayNameFor(model => model.Lnam)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Color)
+                    @Html.DisplayNameFor(model => model.City)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Weight)
+                    @Html.DisplayNameFor(model => model.Street)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Unit)
+                    @Html.DisplayNameFor(model => model.NumberHome)
                 </th>
             <th></th>
         </tr>
@@ -34,19 +34,19 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.TypeName)
+                @Html.DisplayFor(modelItem => item.Fname)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Price)
+                @Html.DisplayFor(modelItem => item.Lnam)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Color)
+                @Html.DisplayFor(modelItem => item.City)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Weight)
+                @Html.DisplayFor(modelItem => item.Street)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Unit)
+                @Html.DisplayFor(modelItem => item.NumberHome)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

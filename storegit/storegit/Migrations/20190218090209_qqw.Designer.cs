@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using storegit.Models;
 
 namespace storegit.Migrations
 {
     [DbContext(typeof(shopeContext))]
-    partial class shopeContextModelSnapshot : ModelSnapshot
+    [Migration("20190218090209_qqw")]
+    partial class qqw
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,24 +102,6 @@ namespace storegit.Migrations
                     b.ToTable("Order");
                 });
 
-            modelBuilder.Entity("storegit.Models.OrderAndProduct", b =>
-                {
-                    b.Property<int>("OrderAndProductid")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("OrderId");
-
-                    b.Property<int>("ProductId");
-
-                    b.HasKey("OrderAndProductid");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderAndProduct");
-                });
-
             modelBuilder.Entity("storegit.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -136,6 +120,8 @@ namespace storegit.Migrations
                     b.Property<double>("Weight");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Product");
                 });
@@ -173,16 +159,11 @@ namespace storegit.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("storegit.Models.OrderAndProduct", b =>
+            modelBuilder.Entity("storegit.Models.Product", b =>
                 {
-                    b.HasOne("storegit.Models.Order", "order")
-                        .WithMany("OrderAndProduct")
+                    b.HasOne("storegit.Models.Order", "Order")
+                        .WithMany("Products")
                         .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("storegit.Models.Product", "product")
-                        .WithMany("OrderAndProduct")
-                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

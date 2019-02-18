@@ -7,6 +7,7 @@ namespace storegit.Models
 {
     public class Product
     {
+       
         public int Id { get; set; }
         public String TypeName { get; set; }
         public int Price { get; set; }
@@ -14,8 +15,13 @@ namespace storegit.Models
         public double Weight { get; set; }
         public int Unit { get; set; }
         public int OrderId { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual ICollection<OrderAndProduct> OrderAndProduct { get; set; }
 
 
+
+    }
+
+    internal class KeyAttribute : Attribute
+    {
     }
 }

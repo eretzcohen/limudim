@@ -48,7 +48,7 @@ namespace storegit
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Products}/{action=Index}/{id?}");
+                    template: "{controller=Orders}/{action=Index}/{id?}");
             });
         }
     }

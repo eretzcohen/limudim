@@ -20,8 +20,5 @@ namespace storegit.Models
 
 
     }
-
-    internal class KeyAttribute : Attribute
-    {
-    }
+   
 }
